@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   scipy-0.18.1.tar.xz: 3b871f079ce45793f742cb0c42f635d3ce57c226
+sources:
+  scipy-1.2.0.tar.gz: 7e4b5a8c9de029e4eab8735df51b1d8f1e55d346

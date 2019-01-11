@@ -15,9 +15,9 @@
 
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	0.18.1
-Release:	2
-Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.xz
+Version:	1.2.0
+Release:	1
+Source0:	https://github.com/scipy/scipy/releases/download/v1.2.0/scipy-%{version}.tar.gz
 Source1:	%{name}.rpmlintrc
 License:	BSD
 Group:		Development/Python
@@ -118,19 +118,19 @@ PATH=${PATH#%{_datadir}/colorgcc:}
 python setup.py install --prefix=%{_prefix} --root=%{buildroot}
 find %{buildroot}%{python_sitearch}/scipy -type d -name tests | xargs rm -rf # Don't ship tests
 # Don't ship weave examples, they're marked as documentation:
-find %{buildroot}%{python_sitearch}/scipy/weave -type d -name examples | xargs rm -rf
+find %{buildroot}%{py_platsitedir}/scipy/weave -type d -name examples | xargs rm -rf
 # fix executability issue
-chmod +x %{buildroot}%{python_sitearch}/%{module}/io/arff/arffread.py
-chmod +x %{buildroot}%{python_sitearch}/%{module}/special/spfun_stats.py
+chmod +x %{buildroot}%{py_platsitedir}/%{module}/io/arff/arffread.py
+chmod +x %{buildroot}%{py_platsitedir}/%{module}/special/spfun_stats.py
 
 pushd %py2dir
 python2 setup.py install --prefix=%{_prefix} --root=%{buildroot}
 find %{buildroot}%{python2_sitearch}/scipy -type d -name tests | xargs rm -rf # Don't ship tests
 # Don't ship weave examples, they're marked as documentation:
-find %{buildroot}%{python2_sitearch}/scipy/weave -type d -name examples | xargs rm -rf
+find %{buildroot}%{py_platsitedir}/scipy/weave -type d -name examples | xargs rm -rf
 # fix executability issue
-chmod +x %{buildroot}%{python2_sitearch}/%{module}/io/arff/arffread.py
-chmod +x %{buildroot}%{python2_sitearch}/%{module}/special/spfun_stats.py
+chmod +x %{buildroot}%{py_platsitedir}/%{module}/io/arff/arffread.py
+chmod +x %{buildroot}%{py_platsitedir}/%{module}/special/spfun_stats.py
 
 
 
