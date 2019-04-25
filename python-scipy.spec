@@ -60,7 +60,7 @@ BuildRequires:	python2-nose
 BuildRequires:	python2-matplotlib
 BuildRequires:	python2-numpy-devel
 
-%description
+%description -n python2-%{module}
 SciPy is an open source library of scientific tools for Python. SciPy
 supplements the popular numpy module, gathering a variety of high level
 science and engineering modules together as a single package.
