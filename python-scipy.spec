@@ -54,7 +54,7 @@ solvers, and others.
 
 %prep
 %setup -q -n %{module}-%{version}
-%apply_patches
+%autopatch -p1
 find . -type f -name "*.py" -exec sed -i "s|#!/usr/bin/env python||" {} \;
 
 cat > site.cfg << EOF
