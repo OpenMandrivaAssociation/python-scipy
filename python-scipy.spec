@@ -52,23 +52,6 @@ SciPy includes modules for graphics and plotting, optimization, integration,
 special functions, signal and image processing, genetic algorithms, ODE 
 solvers, and others.
 
-%package -n python2-%{module}
-Summary:        Scientific tools for Python
-BuildRequires:	python2-devel
-BuildRequires:	python2-setuptools
-BuildRequires:	python2-nose
-BuildRequires:	python2-matplotlib
-BuildRequires:	python2-numpy-devel
-
-%description -n python2-%{module}
-SciPy is an open source library of scientific tools for Python. SciPy
-supplements the popular numpy module, gathering a variety of high level
-science and engineering modules together as a single package.
-
-SciPy includes modules for graphics and plotting, optimization, integration,
-special functions, signal and image processing, genetic algorithms, ODE
-solvers, and others.
-
 %prep
 %setup -q -n %{module}-%{version}
 %autopatch -p1
@@ -86,8 +69,6 @@ include_dirs = /usr/include/suitesparse:/usr/include/ufsparse
 umfpack_libs = umfpack
 EOF
 
-cp -a . %{py2dir}
-
 %build
 # workaround for not using colorgcc when building due to colorgcc
 # messes up output redirection..
@@ -100,21 +81,10 @@ BLAS=%{_libdir} \
 LAPACK=%{_libdir} \
 python setup.py config_fc --fcompiler=gnu95 --noarch build build_ext -lm
 
-pushd %py2dir
-env env CC=gcc CXX=g++ PATH=${PATH#%{_datadir}/colorgcc:} \
-FFLAGS="$RPM_OPT_FLAGS -fPIC" \
-CFLAGS="%{optflags} -fno-strict-aliasing -fno-lto" \
-ATLAS=%{_libdir}/atlas \
-FFTW=%{_libdir} \
-BLAS=%{_libdir} \
-LAPACK=%{_libdir} \
-python2 setup.py config_fc --fcompiler=gnu95 --noarch build build_ext -lm
-
 %install
 export CC=gcc
 export CXX=g++
 %py3_install
-%py2_install
 
 %check
 pushd doc &> /dev/null
@@ -126,9 +96,3 @@ popd &> /dev/null
 %dir %{py_platsitedir}/%{module}
 %{py_platsitedir}/%{module}/*
 %{py_platsitedir}/%{module}-*.egg-info
-
-%files -n python2-%{module}
-%doc doc/README.txt THANKS.txt LICENSE.txt
-%dir %{py2_platsitedir}/%{module}
-%{py2_platsitedir}/%{module}/*
-%{py2_platsitedir}/%{module}-*.egg-info
