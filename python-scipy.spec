@@ -15,8 +15,8 @@
 
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	1.2.1
-Release:	2
+Version:	1.5.0
+Release:	1
 Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.xz
 Source1:	%{name}.rpmlintrc
 License:	BSD
@@ -36,6 +36,7 @@ BuildRequires:	python-numpy-devel >= 1.5
 BuildRequires:	gcc-gfortran >= 4.0
 BuildRequires:	netcdf-devel
 BuildRequires:	python3-devel
+BuildRequires:	python-numpy-f2py
 BuildRequires:	python-nose
 BuildRequires:	amd-devel
 BuildRequires:	umfpack-devel
@@ -72,7 +73,7 @@ EOF
 %build
 # workaround for not using colorgcc when building due to colorgcc
 # messes up output redirection..
-env CC=gcc CXX=g++ PATH=${PATH#%{_datadir}/colorgcc:} \
+env CC=clang CXX=clang++ PATH=${PATH#%{_datadir}/colorgcc:} \
 CFLAGS="%{optflags} -fno-strict-aliasing -fno-lto" \
 FFLAGS="$RPM_OPT_FLAGS -fPIC" \
 ATLAS=%{_libdir}/atlas \
@@ -82,8 +83,8 @@ LAPACK=%{_libdir} \
 python setup.py config_fc --fcompiler=gnu95 --noarch build build_ext -lm
 
 %install
-export CC=gcc
-export CXX=g++
+#export CC=gcc
+#export CXX=g++
 %py3_install
 
 %check
@@ -92,7 +93,7 @@ pushd doc &> /dev/null
 popd &> /dev/null
 
 %files
-%doc doc/README.txt THANKS.txt LICENSE.txt
+%doc THANKS.txt LICENSE.txt
 %dir %{py_platsitedir}/%{module}
 %{py_platsitedir}/%{module}/*
 %{py_platsitedir}/%{module}-*.egg-info
