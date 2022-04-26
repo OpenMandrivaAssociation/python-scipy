@@ -1,3 +1,4 @@
+# Can't mix clang (C/C++) and gcc (fortran) when using LTO
 %global _disable_lto 1
 %global Werror_cflags %nil
 
@@ -91,8 +92,7 @@ This package contains documentation for Scipy
 #---------------------------------------------------------------------------
 
 %prep
-%setup -q -n %{module}-%{version}
-%autopatch -p1
+%autosetup -p1 -n %{module}-%{version}
 find . -type f -name "*.py" -exec sed -i "s|#!/usr/bin/env python||" {} \;
 
 cat > site.cfg << EOF
@@ -117,7 +117,7 @@ export SCIPY_USE_PYTHRAN=0%{?with_pythran}
 # messes up output redirection..
 env CC=clang CXX=clang++ PATH=${PATH#%{_datadir}/colorgcc:} \
 CFLAGS="%{optflags} -fno-strict-aliasing -fno-lto" \
-FFLAGS="$RPM_OPT_FLAGS -fPIC" \
+FFLAGS="$RPM_OPT_FLAGS -fPIC -fallow-argument-mismatch	" \
 %if %{with atlas}
 ATLAS=%{_libdir}/atlas \
 %endif
