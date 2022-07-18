@@ -18,8 +18,8 @@
 
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	1.7.3
-Release:	2
+Version:	1.8.1
+Release:	1
 Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.xz
 #Source1:	%{name}.rpmlintrc
 License:	BSD
@@ -72,7 +72,7 @@ solvers, and others.
 %doc LICENSE.txt
 %dir %{py_platsitedir}/%{module}
 %{py3_platsitedir}/%{module}/*
-%{py3_platsitedir}/%{module}-*.egg-info
+%{py3_platsitedir}/SciPy*.egg-info
 
 #---------------------------------------------------------------------------
 
