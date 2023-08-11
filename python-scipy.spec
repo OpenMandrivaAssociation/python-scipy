@@ -18,9 +18,9 @@
 
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	1.8.1
-Release:	2
-Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.xz
+Version:	1.11.1
+Release:	1
+Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.gz
 #Source1:	%{name}.rpmlintrc
 License:	BSD
 Group:		Development/Python
