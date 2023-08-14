@@ -37,7 +37,7 @@ BuildRequires:	pkgconfig(lapack)
 BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(netcdf)
 BuildRequires:	python-numpy-f2py
-BuildRequires:	python3dist(cython)
+BuildRequires:	python3dist(cython) < 1.0
 BuildRequires:	python3dist(pybind11) >= 2.4.0
 BuildRequires:	python3dist(matplotlib)
 BuildRequires:	python3dist(numpy) >= 1.9.2
