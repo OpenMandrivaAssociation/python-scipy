@@ -24,7 +24,7 @@ Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{ve
 #Source1:	%{name}.rpmlintrc
 License:	BSD
 Group:		Development/Python
-Url:		http://www.scipy.org
+Url:		https://www.scipy.org
 BuildRequires:	swig
 BuildRequires:	amd-devel
 %if %{with atlas}
