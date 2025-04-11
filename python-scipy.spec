@@ -21,13 +21,13 @@ Group:		Development/Python
 Url:		https://www.scipy.org
 BuildRequires:	swig
 BuildRequires:	amd-devel
-BuildRequires:	pkgconfig(%{blaslib})
 BuildRequires:	gcc-gfortran >= 4.0
+BuildRequires:	pkgconfig(%{blaslib})
 BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(netcdf)
 BuildRequires:	python-numpy-f2py
 BuildRequires:	python%{pyver}dist(cython)
-BuildRequires;	python%{pyver}dist(meson-python)
+BuildRequires:	python%{pyver}dist(meson-python)
 BuildRequires:	python%{pyver}dist(matplotlib)
 BuildRequires:	python%{pyver}dist(numpy) >= 1.9.2
 BuildRequires:	python%{pyver}dist(nose)
