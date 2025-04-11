@@ -27,10 +27,11 @@ BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(netcdf)
 BuildRequires:	python-numpy-f2py
 BuildRequires:	python%{pyver}dist(cython)
-BuildRequires:	python%{pyver}dist(pybind11) >= 2.4.0
+BuildRequires;	python%{pyver}dist(meson-python)
 BuildRequires:	python%{pyver}dist(matplotlib)
 BuildRequires:	python%{pyver}dist(numpy) >= 1.9.2
 BuildRequires:	python%{pyver}dist(nose)
+BuildRequires:	python%{pyver}dist(pybind11) >= 2.4.0
 BuildRequires:	python%{pyver}dist(setuptools)
 %if %{with doc}
 BuildRequires:	python%{pyver}dist(sphinx)
