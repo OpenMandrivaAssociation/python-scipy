@@ -4,21 +4,15 @@
 
 %define module	scipy
 
-%bcond_without atlas
+# BLAS lib
+%global blaslib flexiblas
+
 %bcond_with doc
 %bcond_with pythran
 
-%if %{with atlas}
-%if %{_use_internal_dependency_generator}
-%define __noautoreq 'lib(s|t)atlas\\.so\\..* 
-%else
-%define _requires_exceptions lib(s|t)atlas\.so\..*
-%endif
-%endif
-
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	1.11.1
+Version:	1.11.4
 Release:	1
 Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.gz
 #Source1:	%{name}.rpmlintrc
@@ -27,29 +21,24 @@ Group:		Development/Python
 Url:		https://www.scipy.org
 BuildRequires:	swig
 BuildRequires:	amd-devel
-%if %{with atlas}
-BuildRequires:	libatlas-devel
-%else
-BuildRequires:	blas-devel
-%endif
+BuildRequires:	pkgconfig(%{blaslib})
 BuildRequires:	gcc-gfortran >= 4.0
-BuildRequires:	pkgconfig(lapack)
 BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(netcdf)
 BuildRequires:	python-numpy-f2py
-BuildRequires:	python3dist(cython) < 1.0
-BuildRequires:	python3dist(pybind11) >= 2.4.0
-BuildRequires:	python3dist(matplotlib)
-BuildRequires:	python3dist(numpy) >= 1.9.2
-BuildRequires:	python3dist(nose)
-BuildRequires:	python3dist(setuptools)
+BuildRequires:	python%{pyver}dist(cython)
+BuildRequires:	python%{pyver}dist(pybind11) >= 2.4.0
+BuildRequires:	python%{pyver}dist(matplotlib)
+BuildRequires:	python%{pyver}dist(numpy) >= 1.9.2
+BuildRequires:	python%{pyver}dist(nose)
+BuildRequires:	python%{pyver}dist(setuptools)
 %if %{with doc}
-BuildRequires:	python3dist(sphinx)
-BuildRequires:	python3dist(matplotlib)
-BuildRequires:	python3dist(numpydoc)
+BuildRequires:	python%{pyver}dist(sphinx)
+BuildRequires:	python%{pyver}dist(matplotlib)
+BuildRequires:	python%{pyver}dist(numpydoc)
 %endif
 %if %{with pythran}
-BuildRequires:  pythran
+BuildRequires:  python%{pyver}dist(pythran)
 %endif
 
 BuildRequires:	suitesparse-devel
@@ -58,6 +47,9 @@ Requires:	python-numpy >= 1.9.2
 
 Obsoletes:	python-SciPy
 Obsoletes:	python-symeig
+
+%patchlist
+https://github.com/scipy/scipy/commit/ab7d08c6148286059f6498ab5c3070268d13cbd9.patch
 
 %description
 SciPy is an open source library of scientific tools for Python. SciPy
@@ -69,10 +61,10 @@ special functions, signal and image processing, genetic algorithms, ODE
 solvers, and others.
 
 %files
-%doc LICENSE.txt
+%license LICENSE.txt
 %dir %{py_platsitedir}/%{module}
 %{py3_platsitedir}/%{module}/*
-%{py3_platsitedir}/SciPy*.egg-info
+%{py3_platsitedir}/%{module}*.*-info
 
 #---------------------------------------------------------------------------
 
@@ -93,42 +85,20 @@ This package contains documentation for Scipy
 
 %prep
 %autosetup -p1 -n %{module}-%{version}
-find . -type f -name "*.py" -exec sed -i "s|#!/usr/bin/env python||" {} \;
 
-cat > site.cfg << EOF
-[amd]
-library_dirs = %{_libdir}
-include_dirs = /usr/include/suitesparse:/usr/include/ufsparse
-amd_libs = amd
+# BLAS
+cat >> pyproject.toml << EOF
 
-[umfpack]
-library_dirs = %{_libdir}
-include_dirs = /usr/include/suitesparse:/usr/include/ufsparse
-umfpack_libs = umfpack
+[tool.meson-python.args]
+setup = ['-Dblas=%{blaslib}', '-Dlapack=%{blaslib}'%{!?with_pythran:, '-Duse-pythran=false'}]
 EOF
 
-%build
-%if ! %{with atlas}
-%define extraflags "-DNO_ATLAS_INFO"
-%endif
-export SCIPY_USE_PYTHRAN=0%{?with_pythran}
 
-# workaround for not using colorgcc when building due to colorgcc
-# messes up output redirection..
-env CC=clang CXX=clang++ PATH=${PATH#%{_datadir}/colorgcc:} \
-CFLAGS="%{optflags} -fno-strict-aliasing -fno-lto" \
-FFLAGS="$RPM_OPT_FLAGS -fPIC -fallow-argument-mismatch	" \
-%if %{with atlas}
-ATLAS=%{_libdir}/atlas \
-%endif
-FFTW=%{_libdir} \
-BLAS=%{_libdir} \
-LAPACK=%{_libdir} \
-python setup.py config_fc --fcompiler=gnu95 --noarch build build_ext -lm
+%build
+%py_build
 
 %install
-export SCIPY_USE_PYTHRAN=0%{?with_pythran}
-%py3_install
+%py_install
 
 # Remove doc files that should be in %%doc:
 rm -f %{buildroot}%{python3_sitearch}/%{pypi_name}/*.txt
@@ -141,6 +111,6 @@ popd
 
 %check
 pushd doc &> /dev/null
-#PYTHONPATH=%{buildroot}%{py_platsitedir} python -c "import scipy; scipy.test()"
+PYTHONPATH=%{buildroot}%{py_platsitedir} python -c "import scipy; scipy.test()"
 popd &> /dev/null
 
