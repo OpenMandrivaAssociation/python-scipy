@@ -32,6 +32,7 @@ BuildRequires:	python%{pyver}dist(matplotlib)
 BuildRequires:	python%{pyver}dist(numpy) >= 1.9.2
 BuildRequires:	python%{pyver}dist(nose)
 BuildRequires:	python%{pyver}dist(pybind11) >= 2.4.0
+BuildRequires:	python%{pyver}dist(pytest)
 BuildRequires:	python%{pyver}dist(setuptools)
 %if %{with doc}
 BuildRequires:	python%{pyver}dist(sphinx)
