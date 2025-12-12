@@ -13,7 +13,7 @@
 Summary:	Scientific tools for Python
 Name:		python-%{module}
 Version:	1.11.4
-Release:	1
+Release:	2
 Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.gz
 #Source1:	%{name}.rpmlintrc
 License:	BSD
