@@ -15,7 +15,7 @@
 
 Summary:	Scientific tools for Python
 Name:		python-%{module}
-Version:	1.16.3
+Version:	1.17.0
 Release:	1
 License:	BSD-3-Clause AND LGPL-2.0-or-later AND BSL-1.0
 Group:		Development/Python
@@ -62,11 +62,6 @@ Requires:	python-numpy >= 1.9.2
 
 Obsoletes:	python-SciPy
 Obsoletes:	python-symeig
-
-# Bug fix: https://github.com/scipy/scipy/pull/23940
-%patchlist
-https://github.com/scipy/scipy/pull/23940/commits/67974982d56f4bb73124aee47d506099182de188.patch
-
 
 %description
 SciPy is an open source library of scientific tools for Python. SciPy
