@@ -14,13 +14,13 @@
 %bcond tests 0
 
 Summary:	Scientific tools for Python
-Name:		python-%{module}
-Version:	1.17.0
+Name:		python-scipy
+Version:	1.17.1
 Release:	1
 License:	BSD-3-Clause AND LGPL-2.0-or-later AND BSL-1.0
 Group:		Development/Python
 URL:		https://www.scipy.org
-Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/scipy-%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/%{module}-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 #Source1:	%%{name}.rpmlintrc
 
 BuildRequires:	swig
