@@ -15,7 +15,7 @@
 
 Summary:	Scientific tools for Python
 Name:		python-scipy
-Version:	1.17.1
+Version:	1.18.0
 Release:	1
 License:	BSD-3-Clause AND LGPL-2.0-or-later AND BSL-1.0
 Group:		Development/Python
@@ -96,7 +96,7 @@ This package contains documentation for Scipy
 #---------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n %{module}-%{version}
+%autosetup -p1 -n scipy-1.18.0
 
 # BLAS
 sed -i "s/    'blas=openblas',/    'blas=%{blaslib}',/" meson.build
