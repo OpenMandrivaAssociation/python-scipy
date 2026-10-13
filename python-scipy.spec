@@ -15,12 +15,12 @@
 
 Summary:	Scientific tools for Python
 Name:		python-scipy
-Version:	1.18.0
+Version:	1.18.1
 Release:	1
 License:	BSD-3-Clause AND LGPL-2.0-or-later AND BSL-1.0
 Group:		Development/Python
 URL:		https://www.scipy.org
-Source0:	https://github.com/scipy/scipy/releases/download/v%{version}/%{module}-%{version}.tar.gz#/%{name}-%{version}.tar.gz
+Source0:	https://files.pythonhosted.org/packages/source/s/scipy/scipy-%{version}.tar.gz#/%{name}-%{version}.tar.gz
 #Source1:	%%{name}.rpmlintrc
 
 BuildRequires:	swig
@@ -31,14 +31,12 @@ BuildRequires:	ninja
 BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(%{blaslib})
 BuildRequires:	pkgconfig(netcdf)
-BuildRequires:	pkgconfig(python)
+BuildRequires:	pkgconfig(python3)
 BuildRequires:	pkgconfig(xsimd)
 BuildRequires:	pkgconfig(pybind11)
 BuildRequires:	python-numpy-f2py
 BuildRequires:	python%{pyver}dist(cython)
-BuildRequires:	python%{pyver}dist(matplotlib)
 BuildRequires:	python%{pyver}dist(meson-python)
-BuildRequires:	python%{pyver}dist(nose)
 BuildRequires:	python%{pyver}dist(numpy) >= 1.9.2
 BuildRequires:  python%{pyver}dist(pip)
 BuildRequires:	python%{pyver}dist(pybind11) >= 2.4.0
@@ -48,6 +46,7 @@ BuildRequires:  python%{pyver}dist(wheel)
 %if %{with tests}
 BuildRequires:	python%{pyver}dist(hypothesis)
 BuildRequires:	python%{pyver}dist(matplotlib)
+BuildRequires:	python%{pyver}dist(nose)
 BuildRequires:	python%{pyver}dist(pytest)
 %endif
 %if %{with doc}
@@ -96,7 +95,7 @@ This package contains documentation for Scipy
 #---------------------------------------------------------------------------
 
 %prep
-%autosetup -p1 -n scipy-1.18.0
+%autosetup -p1 -n scipy-%{version}
 
 # BLAS
 sed -i "s/    'blas=openblas',/    'blas=%{blaslib}',/" meson.build
@@ -111,10 +110,11 @@ sed -Ei '/^[[:blank:]]*"(asv|pytest-cov|pytest-timeout)"/d' pyproject.toml
 sed -i '/^[[:blank:]]*"scikit-umfpack"/d' pyproject.toml
 # Dont use pytest-xdist
 sed -i '/^[[:blank:]]*"pytest-xdist"/d' pyproject.toml
-# Loosen the upper bound on numpy
-sed -i "/numpy/s/,<2\.6//" pyproject.toml
-# Loosen the upper bound on Cython
+# Distro builds ignore pre-emptive upper bounds. Cooker is already past them.
+# numpy<2.8 still accepts numpy 2.5.
+sed -i '/meson-python/s/,<0\.22\.0//' pyproject.toml
 sed -i '/Cython/s/,<[0-9.]\+//' pyproject.toml
+sed -i '/pybind11/s/,<3\.1\.0//' pyproject.toml
 
 %build
 origpath="$PATH"
@@ -126,7 +126,7 @@ export LDFLAGS="%{optflags} -lpython%{pyver}"
 %py_install
 
 # Remove doc files that should be in %%doc:
-rm -f %{buildroot}%{python_sitearch}/%{pypi_name}/*.txt
+rm -f %{buildroot}%{python_sitearch}/%{module}/*.txt
 
 %if %{with doc}
 pushd doc

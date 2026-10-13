@@ -1,1 +1,1 @@
-addFilter("E: devel-file-in-non-devel-package")
+setBadness("devel-file-in-non-devel-package", 0)
